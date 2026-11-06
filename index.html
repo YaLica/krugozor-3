@@ -90,7 +90,7 @@ img,video,audio{-webkit-touch-callout:none}img{-webkit-user-drag:none}
 #riddleQuestions .riddle-question{scroll-margin-top:calc(44vh + 38px);scroll-margin-top:calc(44svh + 38px)}
 
 /* Оформление исходного index сохранено; картинки закреплены над списком. */
-#riddleBoard{position:sticky;top:0;z-index:5;background:var(--paper);padding:8px 0;border-bottom:1px solid var(--line);margin-bottom:16px}
+
 #riddleImages{position:static;padding:0;margin:0;border:0;background:transparent}
 #riddleImages .riddle-image img{height:22vh;height:22svh;max-height:200px;aspect-ratio:auto;object-fit:contain}
 .riddle-feedback{margin:8px 0 0;min-height:26px;line-height:26px}
@@ -107,7 +107,7 @@ img,video,audio{-webkit-touch-callout:none}img{-webkit-user-drag:none}
 #riddleImages .riddle-image.wrong{border-color:#bd6559}
 #monthsList .sign-item img{display:block;width:auto;height:auto;max-width:min(100%,360px);max-height:56vh;max-height:56svh;margin:14px auto 0;object-fit:contain;object-position:center;background:var(--white)}
 @media(max-width:620px){#riddleImages{gap:8px}#riddleImages .riddle-image{padding:5px;border-radius:12px}}
-.pdf-dialog-footer{gap:16px;flex-wrap:wrap;align-items:center}.answer summary{cursor:pointer;min-height:44px;display:flex;align-items:center;color:var(--green);font:15px Arial,sans-serif}.answer{margin-top:14px;border-top:1px solid var(--line);padding-top:8px}.answer[open] summary{margin-bottom:8px}.topic-tile{padding-right:28px}.media-error{font:14px Arial,sans-serif}#riddleBoard{position:sticky;top:0;z-index:5;background:var(--paper);padding:8px 0;border-bottom:1px solid var(--line);margin-bottom:16px}
+.pdf-dialog-footer{gap:16px;flex-wrap:wrap;align-items:center}.answer summary{cursor:pointer;min-height:44px;display:flex;align-items:center;color:var(--green);font:15px Arial,sans-serif}.answer{margin-top:14px;border-top:1px solid var(--line);padding-top:8px}.answer[open] summary{margin-bottom:8px}.topic-tile{padding-right:28px}.media-error{font:14px Arial,sans-serif}
 #riddleImages{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:0 auto;width:min(100%,720px,112svh);max-width:none;padding:0}
 #riddleImages .riddle-image{position:relative;width:100%;aspect-ratio:16/9;padding:0;overflow:hidden;border:3px solid transparent;border-radius:12px;background:#18332c;cursor:pointer}
 #riddleImages .riddle-image img{display:block;width:100%;height:100%;object-fit:contain;aspect-ratio:16/9}
@@ -128,9 +128,10 @@ img,video,audio{-webkit-touch-callout:none}img{-webkit-user-drag:none}
 @media(max-width:620px){#riddleImages{width:100%;gap:8px}.riddle-game{margin-left:-8px;margin-right:-8px}}
 @media(max-height:500px) and (orientation:landscape){#riddleImages{width:100%;grid-template-columns:repeat(4,minmax(0,1fr))}#riddleImages.two-options{grid-template-columns:repeat(2,minmax(0,1fr));width:min(100%,100svh);max-width:none}}
 .answer-placeholder{display:grid;place-items:center;width:100%;height:100%;font-size:clamp(22px,4vw,36px)}.riddle-play:disabled{opacity:.48;cursor:default}
-/* Four equal 4:3 cards; the board leaves room for the audio controls. */
+/* Keep answer pictures at the top while audio questions scroll beneath. */
+#riddleBoard{position:sticky;top:0;z-index:5;background:var(--paper);padding:0 0 12px;border-bottom:1px solid var(--line);margin-bottom:16px}
 .riddle-game{max-width:780px;margin:18px auto 34px}
-#riddleBoard{position:static;padding:8px 0 12px;margin-bottom:16px}
+
 #riddleImages{width:min(100%,64svh,680px);grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 #riddleImages .riddle-image{border:2px solid var(--line);border-radius:12px;background:var(--white)}
 #riddleImages .riddle-image img{border-radius:9px}
