@@ -215,18 +215,30 @@ const RIDDLE_SOUNDS={"отгадка-утро.mp3": "SUQzBAAAAAEEH1RTU0UAAAANAAA
     board.replaceChildren();board.classList.toggle('two-options',group.length===2);
     shuffled(group).forEach((key,i)=>{
       const button=document.createElement('button');button.type='button';button.className='riddle-image';button.dataset.key=key;button.setAttribute('aria-label',pictures[key][0]);
-      const img=document.createElement('img');img.src=pictures[key][2];img.alt=pictures[key][0];img.draggable=false;
+      // Картинка нужной отгадки подгружается при выборе любой загадки.
+      const img=document.createElement('img');img.alt=pictures[key][0];img.draggable=false;
+      img.loading='eager';img.decoding='async';
+      img.onerror=()=>{
+        // Пока иллюстрация не загружена в папку сайта, показываем слово-отгадку.
+        if(!img.isConnected)return;
+        const text=document.createElement('span');text.className='answer-placeholder';
+        text.textContent=pictures[key][0];img.replaceWith(text);
+      };
+      img.src=pictures[key][2];
       button.append(img);button.addEventListener('click',()=>answer(key,button));board.append(button);
     });
   }
   function select(i){
-    if(busy)return;
-    if(i>0&&!solved.has(i-1))return;
+    // Каждую загадку можно открыть в любом порядке, не решая предыдущие.
+    // При переключении звук предыдущей загадки/отгадки останавливается.
     if(playingQuestion===i&&!player.paused){stop();return;}
     stop();stopMedia();current=i;feedback.textContent='';
     rows.forEach((row,n)=>row.classList.toggle('selected',n===i));
+    // Среди четырёх вариантов всегда есть правильная отгадка к выбранной загадке.
+    // Если картинки сейчас не было на экране, она подгружается в эту же область.
     render(optionsFor(i));
-    document.getElementById("riddleBoard").scrollIntoView({block:"start",behavior:"instant"});
+    // Не прокручиваем страницу принудительно: закреплённые картинки остаются сверху,
+    // а список загадок можно прокручивать и выбирать в любом порядке.
     playingQuestion=i;buttons[i].textContent='❚❚';buttons[i].setAttribute('aria-pressed','true');
     playSequence([RIDDLE_FILES[i]],()=>{playingQuestion=null;buttons[i].textContent='▶';buttons[i].setAttribute('aria-pressed','false');});
   }
@@ -241,7 +253,7 @@ const RIDDLE_SOUNDS={"отгадка-утро.mp3": "SUQzBAAAAAEEH1RTU0UAAAANAAA
     feedback.textContent='';
     playAnswer([pictures[key][1],ok?'победа.mp3':'проигрыш.mp3'],()=>{
       busy=false;board.querySelectorAll('button').forEach(b=>b.disabled=false);
-      if(ok){solved.add(round);rows[round].classList.add('solved');if(buttons[round+1])buttons[round+1].disabled=false;}
+      if(ok){solved.add(round);rows[round].classList.add('solved');}
       feedback.textContent=solved.size===correct.length?'Все загадки отгаданы! Молодец!':ok?'Правильно! Молодец!':'Попробуй ещё раз!';
     });
   }
@@ -249,7 +261,7 @@ const RIDDLE_SOUNDS={"отгадка-утро.mp3": "SUQzBAAAAAEEH1RTU0UAAAANAAA
     const row=document.createElement('div');row.className='riddle-question';
     const label=document.createElement('span');label.className='riddle-question-label';label.textContent='Загадка № '+(i+1);
     const button=document.createElement('button');button.type='button';button.className='riddle-play';button.textContent='▶';button.setAttribute('aria-label','Прослушать загадку № '+(i+1));button.setAttribute('aria-pressed','false');
-    button.disabled=i>0;button.addEventListener('click',()=>select(i));row.append(label,button);list.append(row);rows.push(row);buttons.push(button);
+    button.addEventListener('click',()=>select(i));row.append(label,button);list.append(row);rows.push(row);buttons.push(button);
   });
   render(optionsFor(0));
 })();
